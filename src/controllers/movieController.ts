@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
-import { Movie } from '../models/movie'; // Adjust the path according to your project structure
+import { Movie } from '../models/movie'; 
 
-// Get all movies
 export const getMovies = async (req: Request, res: Response) => {
   try {
     const movies = await Movie.find(); // Fetch all movies
@@ -38,6 +37,19 @@ export const updateMovie = async (req: Request, res: Response) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating movie' });
+  }
+};
+
+export const getMovieById = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
+  try {
+    const movie = await Movie.findById(req.params.id);
+    if (!movie) {
+      res.status(404).json({ error: 'Movie not found' });
+      return; // Stop further execution
+    }
+    res.status(200).json(movie);
+  } catch (error) {
+    res.status(400).json({ error: 'Error fetching movie' });
   }
 };
 

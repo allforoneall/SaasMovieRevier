@@ -9,9 +9,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteMovie = exports.updateMovie = exports.addMovie = exports.getMovies = void 0;
-const movie_1 = require("../models/movie"); // Adjust the path according to your project structure
-// Get all movies
+exports.deleteMovie = exports.getMovieById = exports.updateMovie = exports.addMovie = exports.getMovies = void 0;
+const movie_1 = require("../models/movie");
 const getMovies = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const movies = yield movie_1.Movie.find(); // Fetch all movies
@@ -54,6 +53,20 @@ const updateMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.updateMovie = updateMovie;
+const getMovieById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const movie = yield movie_1.Movie.findById(req.params.id);
+        if (!movie) {
+            res.status(404).json({ error: 'Movie not found' });
+            return; // Stop further execution
+        }
+        res.status(200).json(movie);
+    }
+    catch (error) {
+        res.status(400).json({ error: 'Error fetching movie' });
+    }
+});
+exports.getMovieById = getMovieById;
 // Delete a movie
 const deleteMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { id } = req.params;
