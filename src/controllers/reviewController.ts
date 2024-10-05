@@ -12,6 +12,11 @@ export const addReview = async (req: Request, res: Response) => {
   const review = new Review(req.body);
   await review.save();
   const reviews = await Review.find({ movieId: req.body.movieId });
+  const movie = await Movie.findById(req.body.movieId)
+  //@ts-ignore
+  movie.reviews.push(review._id);
+    //@ts-ignore
+  movie.save();
   const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
   await Movie.findByIdAndUpdate(req.body.movieId, { averageRating });
   res.status(201).json(review);

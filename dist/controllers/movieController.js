@@ -55,7 +55,7 @@ const updateMovie = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.updateMovie = updateMovie;
 const getMovieById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const movie = yield movie_1.Movie.findById(req.params.id);
+        const movie = yield movie_1.Movie.findById(req.params.id).populate('reviews');
         if (!movie) {
             res.status(404).json({ error: 'Movie not found' });
             return; // Stop further execution

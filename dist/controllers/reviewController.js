@@ -22,6 +22,11 @@ const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const review = new review_1.Review(req.body);
     yield review.save();
     const reviews = yield review_1.Review.find({ movieId: req.body.movieId });
+    const movie = yield movie_1.Movie.findById(req.body.movieId);
+    //@ts-ignore
+    movie.reviews.push(review._id);
+    //@ts-ignore
+    movie.save();
     const averageRating = reviews.reduce((acc, review) => acc + review.rating, 0) / reviews.length;
     yield movie_1.Movie.findByIdAndUpdate(req.body.movieId, { averageRating });
     res.status(201).json(review);

@@ -42,7 +42,7 @@ export const updateMovie = async (req: Request, res: Response) => {
 
 export const getMovieById = async (req: Request<{ id: string }>, res: Response): Promise<void> => {
   try {
-    const movie = await Movie.findById(req.params.id);
+    const movie = await Movie.findById(req.params.id).populate('reviews');
     if (!movie) {
       res.status(404).json({ error: 'Movie not found' });
       return; // Stop further execution
